@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI-limit-watcher for macOS</title>
+  <meta name="description" content="A macOS menu bar app that reads the usage data Claude Code and Codex already write on your Mac, and tells you when the 5-hour or weekly window resets. No account. No server. Nothing leaves your Mac.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="alternate" hreflang="en" href="index.html">
+  <link rel="alternate" hreflang="pl" href="pl/index.html">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="index.html">AI-limit-watcher</a>
+      <nav class="lang-switch" aria-label="Language">
+        <a href="index.html" lang="en" aria-current="page">EN</a>
+        <a href="pl/index.html" lang="pl" hreflang="pl">PL</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="hero">
+      <div class="wrap">
+        <h1>Know the minute your Claude Code limit comes back.</h1>
+        <p class="lead">A macOS menu bar app that reads the usage data Claude Code and Codex already write on your Mac, and tells you when the 5-hour or weekly window resets. No account. No server. Nothing leaves your Mac.</p>
+        <div class="cta-row">
+          <!-- TODO: podmienić na adres pliku ZIP w GitHub Releases -->
+          <a class="button button-primary" href="DOWNLOAD_URL">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m6 11 6 6 6-6"/><path d="M4 21h16"/></svg>
+            Download the beta (35 MB)
+          </a>
+          <a class="button button-secondary" href="#price">Tell me what it is worth</a>
+        </div>
+        <p class="cta-note">Apple Silicon, macOS 11 or newer. Free while in beta.</p>
+      </div>
+    </section>
+
+    <section class="section problem" aria-labelledby="problem-h">
+      <div class="wrap">
+        <h2 id="problem-h">The problem</h2>
+        <p>You are mid-task. Claude Code stops and tells you to try again later. From that moment you have two bad options: keep checking, or walk away and find out an hour after the limit came back that you could have been working.</p>
+        <p>The reset time is not a secret. Both Claude Code and Codex write it to files on your own Mac. Nothing reads those files and tells you.</p>
+      </div>
+    </section>
+
+    <section class="section does" aria-labelledby="does-h">
+      <div class="wrap">
+        <h2 id="does-h">What it does</h2>
+        <div class="does-grid">
+          <div class="feature-list">
+            <p><strong>A notification at the reset, not a dashboard you have to remember to open.</strong> The alert is scheduled with launchd, so it survives a restart and a logout, and it removes itself after it fires. Click it and the right app opens.</p>
+            <p><strong>It tells you what you were doing.</strong> When Claude runs out, the app notes which Claude Code projects you touched in the last 30 minutes and puts them in the message you get after the reset. You come back to a name, not a blank screen.</p>
+            <p><strong>Two dots in the menu bar.</strong> One for Codex, one for Claude, coloured by how much of the window is gone, with the reset time next to them.</p>
+          </div>
+          <figure class="shot">
+            <img src="zrzuty/panel-en.png" width="360" height="461" alt="App panel in light mode: Codex and Claude limit status, each with a 5-hour window and a weekly window showing usage percentage, a green bar, and the reset time." loading="lazy" decoding="async">
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section four" aria-labelledby="four-h">
+      <div class="wrap">
+        <h2 id="four-h">Four things nothing else does</h2>
+        <div class="four-grid">
+          <article>
+            <h3>Alerts that find you away from the Mac.</h3>
+            <p>Telegram and Slack, with a remote-only mode: the message goes out only when you are not at the machine. At your desk you get a normal macOS banner instead of a phone buzzing in your pocket.</p>
+          </article>
+          <article>
+            <h3>It watches for temporary limit increases.</h3>
+            <p>Providers raise limits for a weekend or run a promotion and announce it on a blog or an RSS feed. The app scans the official sources and tells you. Reddit and X links come through separately, marked as unconfirmed.</p>
+          </article>
+          <article>
+            <h3>It checks itself and repairs what it can.</h3>
+            <p><code>doctor</code> reports what is broken. Self-repair fixes the safe things on its own, once you turn it on. Diagnostics export gives you a report with no secrets in it, so you can send it to me.</p>
+          </article>
+          <article>
+            <h3>Everything stays on your Mac.</h3>
+            <p>No account to create, no server to send data to, no telemetry. The app reads local files. Telegram tokens and Slack webhooks go into the macOS Keychain, encrypted, with no copy in a plain file.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="not-h">
+      <div class="wrap">
+        <div class="not-box">
+          <h2 id="not-h">What it is not</h2>
+          <p class="intro">Written out so you find out here rather than after installing.</p>
+          <ul class="not-list">
+            <li><strong>It does not make your limits bigger</strong> and it does not reduce what you use. It tells you where you stand and when you get the pool back.</li>
+            <li><strong>It does not log in anywhere for you.</strong> It does not read or store your Claude or Codex login credentials.</li>
+            <li><strong>It is not notarized by Apple.</strong> On first launch macOS will say the app is damaged or from an unidentified developer. That is expected, the fix takes fifteen seconds, and it is written down below.</li>
+            <li><strong>Apple Silicon only.</strong> The build is arm64. On an Intel Mac it will not start.</li>
+            <li><strong>Claude does not report an exact percentage with every event.</strong> Claude Code writes a precise number mostly at its warning thresholds. Between them the app shows what it last measured, and says so when that measurement is older than six hours. Codex reports its numbers continuously, so Codex is the precise half of the picture.</li>
+            <li><strong>It is a beta.</strong> Version 0.3.0-beta.35 today, free while it is in beta.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section install" id="install" aria-labelledby="install-h">
+      <div class="wrap">
+        <h2 id="install-h">Install</h2>
+        <ol class="install-steps">
+          <li>Download and unzip.</li>
+          <li>Drag <code>AI-limit-watcher.app</code> to Applications.</li>
+          <li>First launch: macOS blocks it. Open System Settings, go to Privacy and Security, scroll to the bottom, click "Open anyway", enter your password. If the warning comes back, run <code>xattr -cr /Applications/AI-limit-watcher.app</code> in Terminal and launch it again.</li>
+          <li>Allow notifications when asked. That is the whole product.</li>
+        </ol>
+        <p class="install-after">The app lives in the menu bar and never appears in the Dock. To remove it, drag it to the Trash.</p>
+      </div>
+    </section>
+
+    <section class="section privacy" aria-labelledby="privacy-h">
+      <div class="wrap">
+        <h2 id="privacy-h">Privacy, in plain terms</h2>
+        <div class="qa">
+          <p><strong>Does it send anything anywhere?</strong> No. There is no server behind this app and no account. The only outbound traffic is what you switch on yourself: a Telegram or Slack message you configured, and the announcement scanner fetching public pages.</p>
+          <p><strong>Does it touch my API keys?</strong> No. It never reads or writes your login credentials. One optional feature (live percentages for Claude) reads a token that Claude Code already stores in your Keychain, and macOS asks you for permission each time. It is off by default.</p>
+          <p><strong>What does it store?</strong> Reset times, percentages and your settings, in a single file in your home folder. You can delete it and lose nothing but history.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section price" id="price" aria-labelledby="price-h">
+      <div class="wrap">
+        <h2 id="price-h">What would this be worth to you?</h2>
+        <p class="section-intro">I built this for myself. Turning it into a product I can keep alive means paying Apple 99 dollars a year to sign it, before anyone has paid me anything. So I am asking before I spend it, not after. Pick a number. It costs you one click and it is the only answer I actually need.</p>
+
+        <!-- TODO: endpoint usługi zbierającej odpowiedzi -->
+        <form class="price-form" action="FORM_ENDPOINT" method="POST" data-confirmation="Thank you. That number goes straight into the decision.">
+          <input type="hidden" name="lang" value="en">
+
+          <fieldset>
+            <legend class="visually-hidden">Pick a number</legend>
+            <div class="tiles">
+              <label class="tile">
+                <input type="radio" name="price" value="none" required>
+                <span class="mark" aria-hidden="true"></span>
+                <span>Nothing. I would use it only while it is free.</span>
+              </label>
+              <label class="tile">
+                <input type="radio" name="price" value="5usd">
+                <span class="mark" aria-hidden="true"></span>
+                <span>5 dollars, once.</span>
+              </label>
+              <label class="tile">
+                <input type="radio" name="price" value="12usd">
+                <span class="mark" aria-hidden="true"></span>
+                <span>12 dollars, once.</span>
+              </label>
+              <label class="tile">
+                <input type="radio" name="price" value="25usd">
+                <span class="mark" aria-hidden="true"></span>
+                <span>25 dollars, once.</span>
+              </label>
+              <label class="tile">
+                <input type="radio" name="price" value="monthly">
+                <span class="mark" aria-hidden="true"></span>
+                <span>I would rather pay a few dollars a month and get it maintained.</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="field">
+            <label for="email">Email, if you want to know when 1.0 ships</label>
+            <input type="email" id="email" name="email" autocomplete="email" spellcheck="false" aria-describedby="email-hint">
+            <p class="hint" id="email-hint">One email when 1.0 is out. Nothing else, no newsletter, and I am the only person who sees the address.</p>
+          </div>
+
+          <button type="submit" class="button button-primary">Send it</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <!-- TODO: podmienić kontakt@marcinkrokowski.com na ustalony adres e-mail -->
+      <p>Built by Marcin Krokowski. Bugs, ideas and complaints: <a href="mailto:kontakt@marcinkrokowski.com">kontakt@marcinkrokowski.com</a>.</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var form = document.querySelector('.price-form');
+      if (!form) { return; }
+      form.addEventListener('submit', function (event) {
+        // Until the placeholder is replaced with a real endpoint, nothing may be sent anywhere.
+        if (form.getAttribute('action') !== 'FORM_ENDPOINT') { return; }
+        event.preventDefault();
+        var done = document.createElement('p');
+        done.className = 'form-done';
+        done.setAttribute('role', 'status');
+        done.textContent = form.getAttribute('data-confirmation');
+        form.replaceWith(done);
+        done.setAttribute('tabindex', '-1');
+        done.focus();
+      });
+    })();
+  </script>
+
+</body>
+</html>
