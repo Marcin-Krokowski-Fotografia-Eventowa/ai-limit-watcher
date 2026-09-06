@@ -134,7 +134,11 @@
         <p class="section-intro">Zrobiłem to narzędzie dla siebie. Żeby stało się produktem, który mogę utrzymywać, muszę zapłacić Apple 99 dolarów rocznie za podpisanie aplikacji, zanim ktokolwiek zapłaci mi cokolwiek. Dlatego pytam przed wydaniem tych pieniędzy, a nie po. Wybierz kwotę. Kosztuje Cię jedno kliknięcie i jest jedyną odpowiedzią, której naprawdę potrzebuję.</p>
 
         <!-- TODO: endpoint usługi zbierającej odpowiedzi -->
-        <form class="price-form" action="FORM_ENDPOINT" method="POST" data-confirmation="Dziękuję. Ta kwota idzie prosto do decyzji.">
+        <form class="price-form" action="https://api.web3forms.com/submit" method="POST" data-error="Coś poszło nie tak po drodze. Napisz zamiast tego na kontakt@marcinkrokowski.com." data-confirmation="Dziękuję. Ta kwota idzie prosto do decyzji.">
+          <input type="hidden" name="access_key" value="56a6fc66-e1cf-4bbd-8d08-472c187bcb18">
+          <input type="hidden" name="subject" value="ai-limit-watch: deklaracja ceny (PL)">
+          <input type="hidden" name="from_name" value="limitwatcher.app">
+          <input type="checkbox" name="botcheck" class="visually-hidden" style="display:none" tabindex="-1" autocomplete="off">
           <input type="hidden" name="lang" value="pl">
 
           <fieldset>
@@ -193,16 +197,24 @@
       var form = document.querySelector('.price-form');
       if (!form) { return; }
       form.addEventListener('submit', function (event) {
-        // Dopóki placeholder nie zostanie podmieniony na prawdziwy endpoint, nic nie może nigdzie wyjść.
-        if (form.getAttribute('action') !== 'FORM_ENDPOINT') { return; }
         event.preventDefault();
-        var done = document.createElement('p');
-        done.className = 'form-done';
-        done.setAttribute('role', 'status');
-        done.textContent = form.getAttribute('data-confirmation');
-        form.replaceWith(done);
-        done.setAttribute('tabindex', '-1');
-        done.focus();
+        var data = Object.fromEntries(new FormData(form).entries());
+        var done = function (text) {
+          var p = document.createElement('p');
+          p.className = 'form-done';
+          p.setAttribute('role', 'status');
+          p.textContent = text;
+          form.replaceWith(p);
+          p.setAttribute('tabindex', '-1');
+          p.focus();
+        };
+        fetch(form.getAttribute('action'), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(data)
+        }).then(function (r) { return r.json(); })
+          .then(function (r) { done(r.success ? form.getAttribute('data-confirmation') : form.getAttribute('data-error')); })
+          .catch(function () { done(form.getAttribute('data-error')); });
       });
     })();
   </script>
