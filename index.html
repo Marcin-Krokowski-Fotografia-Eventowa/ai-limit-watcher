@@ -8,6 +8,22 @@
   <meta name="color-scheme" content="light dark">
   <link rel="alternate" hreflang="en" href="index.html">
   <link rel="alternate" hreflang="pl" href="pl/index.html">
+  <link rel="canonical" href="https://limitwatcher.app/">
+  <link rel="alternate" hreflang="x-default" href="https://limitwatcher.app/">
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AI-limit-watcher">
+  <meta property="og:url" content="https://limitwatcher.app/">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="pl_PL">
+  <meta property="og:title" content="AI-limit-watcher for macOS">
+  <meta property="og:description" content="A macOS menu bar app that reads the usage data Claude Code and Codex already write on your Mac, and tells you when the 5-hour or weekly window resets. No account. No server. Nothing leaves your Mac.">
+  <meta property="og:image" content="https://limitwatcher.app/zrzuty/panel-en.png">
+  <meta property="og:image:width" content="360">
+  <meta property="og:image:height" content="461">
+  <meta property="og:image:alt" content="The app panel showing Codex and Claude limits with reset times.">
+  <meta name="twitter:card" content="summary">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -133,13 +149,16 @@
         <h2 id="price-h">What would this be worth to you?</h2>
         <p class="section-intro">I built this for myself. Turning it into a product I can keep alive means paying Apple 99 dollars a year to sign it, before anyone has paid me anything. So I am asking before I spend it, not after. Pick a number. It costs you one click and it is the only answer I actually need.</p>
 
-        <!-- TODO: endpoint usługi zbierającej odpowiedzi -->
         <form class="price-form" action="https://api.web3forms.com/submit" method="POST" data-error="Something went wrong on the way. Write to kontakt@marcinkrokowski.com instead." data-confirmation="Thank you. That number goes straight into the decision.">
           <input type="hidden" name="access_key" value="56a6fc66-e1cf-4bbd-8d08-472c187bcb18">
           <input type="hidden" name="subject" value="ai-limit-watch: deklaracja ceny (EN)">
           <input type="hidden" name="from_name" value="limitwatcher.app">
           <input type="checkbox" name="botcheck" class="visually-hidden" style="display:none" tabindex="-1" autocomplete="off">
           <input type="hidden" name="lang" value="en">
+          <!-- Where this answer came from. Empty means the visitor found the page
+               on their own; a ?ref=... link (one sent round to people I know)
+               lands here, so a friend's vote is not counted as a stranger's. -->
+          <input type="hidden" name="ref" value="">
 
           <fieldset>
             <legend class="visually-hidden">Pick a number</legend>
@@ -187,7 +206,6 @@
 
   <footer class="site-footer">
     <div class="wrap">
-      <!-- TODO: podmienić kontakt@marcinkrokowski.com na ustalony adres e-mail -->
       <p>Built by Marcin Krokowski. Bugs, ideas and complaints: <a href="mailto:kontakt@marcinkrokowski.com">kontakt@marcinkrokowski.com</a>.</p>
     </div>
   </footer>
@@ -196,6 +214,13 @@
     (function () {
       var form = document.querySelector('.price-form');
       if (!form) { return; }
+      // Fill the hidden source marker from the link the visitor arrived by.
+      // Kept to a short, safe token: this text ends up in an e-mail, so it must
+      // not carry whatever anyone chooses to append to the URL.
+      var ref = (new URLSearchParams(location.search).get('ref') || '')
+        .replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 32);
+      var refField = form.querySelector('input[name="ref"]');
+      if (refField) { refField.value = ref; }
       form.addEventListener('submit', function (event) {
         event.preventDefault();
         var data = Object.fromEntries(new FormData(form).entries());
