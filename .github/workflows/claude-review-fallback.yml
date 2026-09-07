@@ -1,0 +1,74 @@
+# Claude review na zadanie (caller)
+#
+# Cienki caller: wola wspolna logike z ai-brain (`claude-review-reusable.yml`).
+# Ten plik jest identyczny we wszystkich repo organizacji i utrzymywany
+# automatycznie przez `sync-review-fallback.yml` w ai-brain. NIE edytuj go
+# per-repo - zmiane logiki rob w reusable workflow w ai-brain.
+#
+# Odpalenie: Actions -> Claude review na zadanie -> Run workflow (numer PR).
+#
+# ZMIANA 2026-08-28, DECYZJA MARCINA: recenzje AI na PR przestaja byc
+# automatyczne w calej organizacji. Automatyczne review Codeksa zostalo
+# wylaczone w ustawieniach Codex Cloud, a ten workflow z automatu stal sie
+# przyciskiem na zadanie. Powod: obie recenzje zjadaly limity abonamentow
+# (Codex - pula ChatGPT, ten workflow - okno Claude Code przez token
+# `claude setup-token`), a codzienna siatka bezpieczenstwa to teraz checki
+# mechaniczne w `tests.yml` plus `/code-review` odpalany recznie przed merge
+# zmian wykonywalnych.
+#
+# ZNIKNELY DWIE RZECZY I ZADNA NIE JEST PRZEOCZENIEM:
+#
+# 1. Trigger `issue_comment`. Warunek czekal na komentarz bota Codeksa ze
+#    zdaniem "reached your Codex usage limits" - i DZIALAL. Dowod, zeby nikt
+#    tego nie usunal w przekonaniu, ze usuwa martwy kod: przebieg 32145007535
+#    w AI-Marketing-Operation z 18.08, zdarzenie `issue_comment`, sprawca
+#    chatgpt-codex-connector[bot], zadanie chodzilo 4 minuty (13:53:33-13:57:46)
+#    - czyli byla to prawdziwa recenzja na oknie abonamentu Marcina. W oknie
+#    30 dni takich przebiegow bylo tam 29.
+#
+#    Trigger znika, bo znika jego ZRODLO: po wylaczeniu automatycznych recenzji
+#    Codeksa bot przestanie zglaszac wyczerpany limit, wiec warunek i tak nigdy
+#    by sie nie spelnil. Zostawiony byłby jedyna droga, ktora po cichu zjada
+#    okno Claude Code - a wlasnie tego mielismy sie pozbyc.
+#
+# 2. Bramka kosztowa `vars.CLAUDE_REVIEW_ENABLED`. Chronila przed przebiegami
+#    odpalanymi automatycznie przez zdarzenie. Bez automatycznego triggera nie
+#    ma czego blokowac, a zostawiona blokowalaby TAKZE reczne uruchomienie
+#    w 23 repo, w ktorych zmiennej nikt nie ustawil - czyli psulaby jedyna
+#    rzecz, ktora ten plik jeszcze robi. Jesli kiedys wroci automatyczny
+#    trigger, bramka MUSI wrocic razem z nim: uzasadnienie i pomiar kosztu
+#    (okolo 327 minut miesiecznie na recenzje, ktore sie nie odbywaly) sa
+#    w historii tego pliku, commit z 2026-08-26.
+#
+# Wymaga: org secret CLAUDE_CODE_OAUTH_TOKEN oraz dostepu tego repo do
+# reusable workflow w ai-brain (Settings ai-brain -> Actions -> General ->
+# Access -> "Accessible from repositories in the organization").
+# Zasada: AI Brain 09_PROJECTS/REPO_SAFETY_PROTOCOL.md.
+
+name: Claude review na zadanie
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "Numer PR do review"
+        required: true
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+  id-token: write
+
+jobs:
+  call-claude-review:
+    uses: Marcin-Krokowski-Fotografia-Eventowa/ai-brain-marcin-krokowski/.github/workflows/claude-review-reusable.yml@main
+    with:
+      pr_number: ${{ inputs.pr_number }}
+    # Swiadomie NIE `secrets: inherit` - to przekazywaloby WSZYSTKIE sekrety repo
+    # (w tym VPS_SSH_PRIVATE_KEY w mk-vps-audit-runner i travel-deals-monitor) do
+    # workflow zdefiniowanego w innym repo i wolanego z @main. Reusable potrzebuje
+    # wylacznie tokenu Claude - i tylko on jest tu przekazywany.
+    # Audyt bezpieczenstwa 2026-08-15, znalezisko nr 1.
+    secrets:
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
