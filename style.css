@@ -679,7 +679,44 @@ h3 {
 
 /* Responsive */
 
+/* Screenshot pair. Two real app windows sit side by side; the Statistics
+   window is the wider of the two, so the columns are weighted by the images'
+   own pixel widths rather than split evenly. */
+
+.shots-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 680fr) minmax(0, 600fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: start;
+  margin-top: 2.5rem;
+}
+
+.shots-grid figure {
+  margin: 0;
+}
+
+.shots-grid img {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 12px 32px -16px rgba(0, 0, 0, 0.25);
+  background: #ffffff;
+}
+
+.shots-grid figcaption {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
 @media (max-width: 720px) {
+
+  .shots-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+  }
+
   .does-grid {
     grid-template-columns: minmax(0, 1fr);
   }
