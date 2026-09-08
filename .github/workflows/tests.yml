@@ -1,0 +1,68 @@
+# Testy bazowe (placeholder)
+#
+# Ten plik NIE jest workflowem sam w sobie - to szablon zrodlowy dla
+# `sync-review-fallback.yml`, kopiowany jako `.github/workflows/tests.yml`
+# TYLKO do repo, ktore nie maja jeszcze zadnego wlasnego workflow testow
+# (pod jakakolwiek nazwa). Cel: kazde repo organizacji ma choc minimalna,
+# uczciwa siatke bezpieczenstwa zamiast zera - bez udawania testow, ktorych
+# nie ma.
+#
+# Sprawdza tylko to, co jest uniwersalne i nie wymaga znajomosci stacku
+# projektu: znaczniki konfliktu mergowania i sekrety wysokiej pewnosci
+# (ten sam wzorzec co `ai-brain-safety.yml` i `marcinkrokowski-site/safety-checks.yml`).
+# Gdy repo dostanie wlasciwe testy, podmien tresc tego pliku (nazwa
+# `tests.yml` zostaje kanoniczna) - kolejny sync go juz nie nadpisze, bo
+# przestanie spelniac warunek "brak jakiegokolwiek workflow testow".
+#
+# Zasady limitu minut (AUDYTOR_PLAN.md): pull_request + push do main (nie
+# kazdy push do gałęzi), bez schedule, concurrency z cancel-in-progress,
+# paths-ignore dla samej dokumentacji.
+#
+# Zrodlo: AUDYTOR_PLAN.md (repo Github), Etap 4.
+
+name: tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "**/*.md"
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  baseline:
+    name: Testy bazowe (placeholder)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Brak znacznikow konfliktu mergowania
+        run: |
+          set -euo pipefail
+          if grep -RInE '^(<<<<<<<|=======$|>>>>>>>)' . --exclude-dir=.git; then
+            echo "Znaleziono znaczniki konfliktu mergowania."
+            exit 1
+          fi
+          echo "Brak znacznikow konfliktu."
+
+      - name: Skan sekretow wysokiej pewnosci
+        run: |
+          set -euo pipefail
+          pattern='-----BEGIN (RSA |EC |OPENSSH |DSA |ENCRYPTED )?PRIVATE KEY-----|ghp_[A-Za-z0-9]{36}|gho_[A-Za-z0-9]{36}|github_pat_[A-Za-z0-9_]{20,}|sk-ant-[A-Za-z0-9_-]{20,}|xox[baprs]-[A-Za-z0-9-]{10,}|AKIA[0-9A-Z]{16}'
+          if grep -RInE -I --exclude-dir=.git -e "$pattern" .; then
+            echo ""
+            echo "Znaleziono material wygladajacy jak realny sekret (patrz wyzej). Nie mergowac - usunac sekret z historii i zrotowac go."
+            exit 1
+          fi
+          echo "Brak sekretow wysokiej pewnosci."
+
+      - name: Przypomnienie
+        run: |
+          echo "To jest placeholder z Etapu 4 (AUDYTOR_PLAN.md w repo Github) - to repo nie ma jeszcze wlasciwych testow projektu. Podmien tresc tego pliku na realne CI, kiedy projekt bedzie mial co testowac; nazwa tests.yml zostaje."
