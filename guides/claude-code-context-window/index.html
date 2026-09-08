@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Claude Code Context Window: What Uses It and How to Use Less</title>
+  <meta name="description" content="A practical guide to Claude Code context: what fills it, when to use /clear or /compact, and how to read less without losing the work that matters.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="canonical" href="https://limitwatcher.app/guides/claude-code-context-window/">
+  <link rel="alternate" hreflang="en" href="https://limitwatcher.app/guides/claude-code-context-window/">
+  <link rel="alternate" hreflang="pl" href="https://limitwatcher.app/pl/poradniki/okno-kontekstu-claude-code/">
+  <link rel="alternate" hreflang="x-default" href="https://limitwatcher.app/guides/claude-code-context-window/">
+  <link rel="stylesheet" href="../../style.css">
+  <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"Article","headline":"Claude Code Context Window: What Uses It and How to Use Less","description":"A practical guide to context management in Claude Code.","author":{"@type":"Person","name":"Marcin Krokowski"},"dateModified":"2026-09-08","inLanguage":"en","mainEntityOfPage":"https://limitwatcher.app/guides/claude-code-context-window/"}
+  </script>
+</head>
+<body>
+  <header class="site-header"><div class="wrap"><a class="wordmark" href="../../index.html">AI-limit-watcher</a><nav class="lang-switch" aria-label="Language"><a href="index.html" lang="en" aria-current="page">EN</a><a href="../../pl/poradniki/okno-kontekstu-claude-code/" lang="pl" hreflang="pl">PL</a></nav></div></header>
+  <main>
+    <section class="hero"><div class="wrap"><p class="cta-note">Guide</p><h1>Claude Code Context Window: What Uses It and How to Use Less</h1><p class="lead">A shorter prompt helps a little. A smaller working history, narrower file reads and shorter tool output usually matter more.</p></div></section>
+    <section class="section"><div class="wrap guide-layout"><nav class="guide-nav" aria-label="On this page"><strong>On this page</strong><ol><li><a href="#what">What fills context</a></li><li><a href="#late">Why later turns grow</a></li><li><a href="#clear-compact">/clear or /compact</a></li><li><a href="#read-less">Read less of the repo</a></li><li><a href="#sample">One local sample</a></li><li><a href="#context-saver">context-saver skill</a></li></ol></nav><article class="guide-content">
+      <h2 id="what">What fills a Claude Code context window</h2>
+      <p>Context is the working material Claude Code can see in the current session. It includes your instructions, conversation history, files it reads, its replies and tool output. Project rules, memories, skills and hooks can add material before the first prompt.</p>
+      <p>This is why a task can become heavy without one enormous message. A directory listing, a broad search result and a long test log are all useful only if they help make the next decision. Otherwise they keep travelling with the conversation.</p>
+      <h2 id="late">Why later turns can cost more than the first</h2>
+      <p>Each new turn is built on the relevant history already in the session. Early work may include a small brief and a few files. Later work can carry earlier decisions, edits, logs and repeated investigations as well.</p>
+      <p>The practical question is not "how do I write the shortest prompt?" It is "what must still be available for the next decision?" Keep that answer small and named.</p>
+      <h2 id="clear-compact">When to use <code>/clear</code> and when to use <code>/compact</code></h2>
+      <h3>Use <code>/clear</code> for a different task</h3>
+      <p>If you move from a CSS bug to a marketing draft, the old conversation is mostly baggage. Start a clean session and state the new goal. If one decision from the previous work matters, copy that decision into the new prompt rather than the whole discussion.</p>
+      <h3>Use <code>/compact</code> to continue one long task</h3>
+      <p>Compaction summarizes the conversation so the task can continue. Before it runs, name the priority: the goal, accepted decisions, files that remain relevant, checks already run and the current risk. Claude Code's documentation calls this focused compaction.</p>
+      <p>Neither command makes a plan limit larger. They change what the current session carries forward.</p>
+      <h2 id="read-less">Read less of the repository and keep logs useful</h2>
+      <ul><li>Start with a narrow search for a filename, symbol or visible phrase.</li><li>Open the smallest relevant file or range first. Expand only after the result proves it is necessary.</li><li>Ask for a focused command result, such as failing test names, instead of a full build log.</li><li>When research is large, keep the final summary with its evidence and leave the raw exploration in its own context.</li><li>Write down unrelated improvements as <em>Later</em>. Do not add them to the current task because they are nearby.</li></ul>
+      <h2 id="sample">A local sample, not a promise</h2>
+      <p>The Statistics screenshot in AI-limit-watcher shows one seven-day sample from the author's Mac. In that sample, 74% of tokens were in calls above 200k context. A late turn used 526k tokens compared with 68k near the start. This is a useful signal to inspect your own habits, not a result that every Claude Code user should expect.</p>
+      <p>AI-limit-watcher shows where usage went and when limits reset. It does not increase a limit or reduce token use by itself.</p>
+      <h2 id="context-saver">Copy the context-saver skill</h2>
+      <p>This small skill is for a real task that risks growing into a broad investigation. Copy it into a folder named <code>context-saver</code>, or download the ready folder.</p>
+      <pre class="skill-code"><code>---
+name: context-saver
+description: Keep a substantial coding or research task focused when it risks broad repository reads, long tool output, or an overloaded session. Do not use for a simple one-file edit.
+---
+
+# Context Saver
+
+Work on one user task at a time.
+
+- Start with a narrow search and the smallest files or ranges that can answer the next question.
+- Read the full repository or full logs only when earlier evidence shows they are needed.
+- Do not add adjacent improvements. Record them as `Later`.
+- At the end of a stage, write a short handoff: goal, decisions, files, tests, risks, and one next step.
+- Do not promise a percentage reduction in context or token use.</code></pre>
+      <p><a class="button button-primary" href="../../downloads/context-saver.zip">Download context-saver.zip</a></p>
+      <h2>Sources</h2><ul class="source-list"><li><a href="https://code.claude.com/docs/en/context-window">Anthropic: Explore the context window</a></li><li><a href="https://code.claude.com/docs/en/costs">Anthropic: Manage costs effectively</a></li><li><a href="https://openai.com/index/unrolling-the-codex-agent-loop/">OpenAI: Unrolling the Codex agent loop</a></li></ul>
+      <p class="guide-back"><a href="../../index.html">Back to AI-limit-watcher</a></p>
+    </article></div></section>
+  </main>
+  <footer class="site-footer"><div class="wrap"><p>Built by Marcin Krokowski. Bugs, ideas and complaints: <a href="mailto:kontakt@marcinkrokowski.com">kontakt@marcinkrokowski.com</a>.</p></div></footer>
+</body></html>
