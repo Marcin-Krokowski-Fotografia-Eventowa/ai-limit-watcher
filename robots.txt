@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://limitwatcher.app/sitemap.xml

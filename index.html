@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI-limit-watcher for macOS</title>
-  <meta name="description" content="A macOS menu bar app that reads the usage data Claude Code and Codex already write on your Mac, and tells you when the 5-hour or weekly window resets. No account. No server. Nothing leaves your Mac.">
+  <title>Claude Code & Codex limit monitor for macOS | AI-limit-watcher</title>
+  <meta name="description" content="AI-limit-watcher shows when Claude Code and Codex limits reset on your Mac. See local usage, get reset alerts, and learn how context affects long sessions.">
   <meta name="color-scheme" content="light dark">
-  <link rel="alternate" hreflang="en" href="index.html">
-  <link rel="alternate" hreflang="pl" href="pl/index.html">
+  <link rel="alternate" hreflang="en" href="https://limitwatcher.app/">
+  <link rel="alternate" hreflang="pl" href="https://limitwatcher.app/pl/">
   <link rel="canonical" href="https://limitwatcher.app/">
   <link rel="alternate" hreflang="x-default" href="https://limitwatcher.app/">
   <link rel="icon" href="/favicon.png" type="image/png">
@@ -24,6 +24,9 @@
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="The AI-limit-watcher app icon beside the name and the sentence: Know the minute your Claude Code limit comes back.">
   <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"SoftwareApplication","name":"AI-limit-watcher","applicationCategory":"UtilitiesApplication","operatingSystem":"macOS 11 or newer","description":"A macOS menu bar app that shows Claude Code and Codex usage reset times from local data.","url":"https://limitwatcher.app/","inLanguage":"en","author":{"@type":"Person","name":"Marcin Krokowski"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -116,6 +119,22 @@
             <img src="zrzuty/powiadomienia-en.png" width="600" height="412" alt="Notifications tab: checkboxes for limit reminders, a warning once a threshold is crossed with the threshold slider at 70 percent, weekly forecast alerts and an alert when the pool returns, plus buttons for Telegram and Slack." loading="lazy" decoding="async">
             <figcaption>Notifications &mdash; you decide when it speaks up.</figcaption>
           </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section context-habits" aria-labelledby="context-habits-h">
+      <div class="wrap">
+        <h2 id="context-habits-h">Three habits that make a long session lighter</h2>
+        <p class="section-intro">AI-limit-watcher will not make your limits bigger. These habits can make the work inside a session easier to carry.</p>
+        <ol class="habit-list">
+          <li><strong>New task, new session.</strong> Do not carry an old investigation into unrelated work.</li>
+          <li><strong>One long task, focused compaction.</strong> Keep the decision and the files that matter when the conversation grows.</li>
+          <li><strong>Stage complete, write a handoff.</strong> Record the goal, decisions, files, checks and one next step, then continue fresh.</li>
+        </ol>
+        <div class="cta-row">
+          <a class="button button-secondary" href="guides/claude-code-context-window/">Read the context guide</a>
+          <a class="button button-secondary" href="guides/claude-code-context-window/#context-saver">Copy the context-saver skill</a>
         </div>
       </div>
     </section>
