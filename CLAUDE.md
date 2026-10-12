@@ -9,8 +9,9 @@ tylko, skąd je czytać. Nie twórz drugiego zbioru zasad obok.
 | Sesja na Macu | hook startowy już wstrzyknął `00_START_HERE/SYSTEM_MAP.md` i kartę model+effort - nic nie rób |
 | **Sesja chmurowa** (claude.ai/code, zmienna `CLAUDE_CODE_REMOTE`) | dopnij do sesji repozytorium `Marcin-Krokowski-Fotografia-Eventowa/ai-brain-marcin-krokowski` (tylko odczyt), przeczytaj `00_START_HERE/SYSTEM_MAP.md` i `00_START_HERE/MODEL_EFFORT_CARD.md`, potem tylko moduł pod zadanie |
 
-Konektor „AI Brain" jest pomocniczy: czyta kopię z Dysku, która przy zamkniętym
-Macu bywa stara. Repozytorium ai-brain na `main` jest zawsze świeże.
+Konektor „AI Brain" (MCP online) czyta `main` z GitHuba i jest źródłem zasad dla
+sesji na Macu, w Codexie i w zadaniach harmonogramu. Kopia na Dysku Google to tylko
+kopia zapasowa na wypadek braku konektora (wtedy powiedz o tym Marcinowi).
 
 Zanim cokolwiek zmienisz: `PROJECT_STATUS.md` tego repozytorium oraz - w ai-brain -
 `09_PROJECTS/REPO_SAFETY_PROTOCOL.md` (gałąź, PR, CI, merge) i wpis tego projektu
